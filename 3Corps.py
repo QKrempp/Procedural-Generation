@@ -29,18 +29,43 @@ G           = 10000 # Constante gravitationnelle
 t           = 0.01  # Unité de temps
 eps         = 100   # Paramètre limitant les "collisions transparentes" sans lequel les corps peuvent se retrouver avec des vitesses quasi infinies après s'être passées à travers
 coeff_fr    = 0.999 # Frottements, sans lesquels les vitesses augmentent fortement avec le temps (du fait des rebonds)
-trainee     = 30
+trainee     = 50
+incert      = 1e-5  # Incertitude sur l'initialisation dans "circle_init"
 
-M = np.random.randint(100, 1000, (nbBody, 1))
-X = sizeX * np.random.random((nbBody, 1))
-Y = sizeY * np.random.random((nbBody, 1))
-VX = speedRange * (np.random.random((nbBody, 1)) - 0.5)
-VY = speedRange * (np.random.random((nbBody, 1)) - 0.5)
 AX = np.zeros((nbBody, 1))
 AY = np.zeros((nbBody, 1))
-
 X_toDraw = 20 * np.ones((nbBody, trainee))  # Positions des morceaux de tainée
 Y_toDraw = 20 * np.ones((nbBody, trainee))
+
+
+#   Initialisation aléatoire du problème
+#----------------------------------------
+def random_init():
+    global M
+    global X
+    global Y
+    global VX
+    global VY
+    M = np.random.randint(100, 1000, (nbBody, 1))
+    X = sizeX * np.random.random((nbBody, 1))
+    Y = sizeY * np.random.random((nbBody, 1))
+    VX = speedRange * (np.random.random((nbBody, 1)) - 0.5)
+    VY = speedRange * (np.random.random((nbBody, 1)) - 0.5)
+
+
+#   Initialisation en cercle pour observer l'aspect chaotique du système entre deux simulations identiques à "incert" près
+#--------------------------------------------------------------------------------------------------------------------------
+def circle_init():
+    global M
+    global X
+    global Y
+    global VX
+    global VY
+    M = 300 * np.ones((nbBody, 1))
+    X = (sizeY / 3) * (np.cos(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody)) + sizeX / 2 + incert * np.random.random((nbBody, 1))
+    Y = (sizeY / 3) * (np.sin(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody)) + sizeY / 2 + incert * np.random.random((nbBody, 1))
+    VX = 500 * np.cos(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
+    VY = 500 * np.sin(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
 
 
 #   Fonctions de calcul du modèle physique discrétisé
@@ -112,6 +137,7 @@ def animate_ball(Window, canvas):
 
 #   Lancement du script
 #-----------------------
+circle_init()
 Animation_Window = create_animation_window()
 Animation_canvas = create_animation_canvas(Animation_Window)
 animate_ball(Animation_Window,Animation_canvas)
