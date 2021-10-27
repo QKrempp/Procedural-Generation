@@ -23,7 +23,7 @@ def hex_to_rgb(value):
 
 #   Données physiques du problème
 #---------------------------------
-nbBody      = 30
+nbBody      = 50
 speedRange  = 100
 G           = 10000 # Constante gravitationnelle
 t           = 0.01  # Unité de temps
@@ -64,8 +64,8 @@ def circle_init():
     M = 300 * np.ones((nbBody, 1))
     X = (sizeY / 3) * (np.cos(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody)) + sizeX / 2 + incert * np.random.random((nbBody, 1))
     Y = (sizeY / 3) * (np.sin(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody)) + sizeY / 2 + incert * np.random.random((nbBody, 1))
-    VX = 500 * np.cos(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
-    VY = 500 * np.sin(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
+    VX = 30 * np.cos(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
+    VY = 30 * np.sin(np.reshape(np.arange(0, nbBody), (nbBody, 1)) * 2 * np.pi / nbBody + np.pi / 2)
 
 
 #   Fonctions de calcul du modèle physique discrétisé
